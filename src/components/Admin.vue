@@ -1,33 +1,25 @@
 <template>
 <v-app id="inspire">
-  <!-- <v-app id="inspire">
-    <v-app-bar
+     <v-navigation-drawer
+      v-model="drawer"
       app
-      color="red"
-      flat
+      class="pt-4"
+      color="grey lighten-3"
+      mini-variant
     >
-    </v-app-bar> -->
-      <!-- <v-avatar
-        :color="$vuetify.breakpoint.smAndDown ? 'white' : 'transparent'"
-        size="32"
+      <v-avatar
+        v-for="n in 6"
+        :key="n"
+        :color="`grey ${n === 1 ? 'darken' : 'lighten'}-1`"
+        :size="n === 1 ? 36 : 20"
+        class="d-block text-center mx-auto mb-9"
       ></v-avatar>
-
-      <div
-        centered
-        class="ml-n9"
-        color="white"
-      >
-        <v-tab
-        >
-          RESPER
-        </v-tab>
-      </div>
-    </v-app-bar> -->
+    </v-navigation-drawer> 
 
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col
+           <!-- <v-col
             cols="12"
             sm="2"
           >
@@ -39,7 +31,7 @@
                 <b-button @click="logout">Logout</b-button>
               </div>
             </v-sheet>
-          </v-col>
+          </v-col>  -->
 
           <v-col
             cols="12"
@@ -64,18 +56,18 @@
               min-height="268"
             >
               <div id="registerServer">
-        <form @submit.prevent="register">
-            <div>
-                <label for="username">email</label>
-                <input name="username" v-model="username" placeholder="email">
-            </div>
-            <div>
-                <label for="password">password</label>
-                <input name="password" v-model="password" placeholder="password" type="password">
-            </div>
-                <input type="submit" value="register">
+                <form @submit.prevent="register">
+                  <div>
+                      <label for="username">email</label>
+                      <input name="username" v-model="username" placeholder="email">
+                  </div>
+                  <div>
+                      <label for="password">password</label>
+                      <input name="password" v-model="password" placeholder="password" type="password">
+                  </div>
+                  <input type="submit" value="register">
                 </form>
-            </div>
+              </div>
             </v-sheet>
           </v-col>
         </v-row>

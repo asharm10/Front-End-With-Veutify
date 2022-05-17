@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-app-bar
+  <!-- <v-app>
+     <v-app-bar
       app
       color="red"
       dark
@@ -28,12 +28,12 @@
       <v-spacer></v-spacer>
 
      
-    </v-app-bar>
+    </v-app-bar> 
 
-    <v-main>
+    <v-main> -->
       <router-view/>
-    </v-main>
-  </v-app>
+    <!-- </v-main>
+  </v-app> -->
 </template>
 
 <script>
