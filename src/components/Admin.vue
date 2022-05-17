@@ -45,11 +45,11 @@
 
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
+          LOGOUT
         </v-card-title>
 
         <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Are you sure you want to Logout?
         </v-card-text>
 
         <v-divider></v-divider>
@@ -59,9 +59,16 @@
           <v-btn
             color="primary"
             text
+            @click="logout"
+          >
+            Yes
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
             @click="dialog = false"
           >
-            I accept
+            No
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -96,19 +103,27 @@
               rounded="lg"
               min-height="268"
             >
-              <div id="registerServer">
-                <form @submit.prevent="register">
-                  <div>
-                      <label for="username">email</label>
-                      <input name="username" v-model="username" placeholder="email">
-                  </div>
-                  <div>
-                      <label for="password">password</label>
-                      <input name="password" v-model="password" placeholder="password" type="password">
-                  </div>
-                  <input type="submit" value="register">
-                </form>
-              </div>
+
+              <v-layout align-center justify-center>
+                  <v-card class="elevation-0">
+                    <v-card-title>
+                      Server Registration
+                    </v-card-title>
+                    <v-card-text>
+                      <v-form @submit.prevent="register">
+                        <v-text-field name="Full Name" v-model="name" label="Full Name" type= "text"></v-text-field> 
+                        <v-text-field name="username" v-model="username" label="Email" type="text"></v-text-field>
+                        <v-text-field id="password" name="password" v-model="password" label="Password" type="password">
+                        </v-text-field>
+                        <v-card-actions>
+                          <v-col>
+                            <v-btn type="submit" class="mb-5" block color="error">Add Server</v-btn>
+                          </v-col>
+                        </v-card-actions>
+                      </v-form>
+                    </v-card-text>
+                  </v-card>
+              </v-layout>
             </v-sheet>
           </v-col>
         </v-row>
@@ -122,6 +137,7 @@ export default {
     name: "AdminPage",
     data() {
         return {
+          dialog:false,
           drawer: false,
             servers:[],
             items: [
@@ -140,7 +156,7 @@ export default {
         },
 
         async register() {
-            const { username, password } = this;
+            const { name,username, password } = this;
             const res = await fetch(
                 "http://localhost:5000/admin/servers",
                 {
@@ -151,6 +167,7 @@ export default {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
+                        name,
                         username,
                         password
                     })
