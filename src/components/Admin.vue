@@ -107,7 +107,7 @@
               <v-layout align-center justify-center>
                   <v-card class="elevation-0">
                     <v-card-title>
-                      Server Registration
+                      Add a new Server
                     </v-card-title>
                     <v-card-text>
                       <v-form @submit.prevent="register">
@@ -150,9 +150,11 @@ export default {
             this.getServers();
     },
     methods: {
-        logout() {
-            this.$router.push("/signin");
+        async logout(e) {
+            e.preventDefault();
+            this.dialog = false;
             this.$store.dispatch('setToken', 403)
+            this.$router.back();
         },
 
         async register() {
