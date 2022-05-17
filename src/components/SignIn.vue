@@ -60,6 +60,8 @@ export default {
       if (data.status == 200) {
         this.$store.dispatch('setToken', res.status)
         this.$router.push("/admin");
+      }else{
+        alert("Invalid credentials");
       }
     }
   }
