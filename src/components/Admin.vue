@@ -39,7 +39,7 @@
           v-bind="attrs"
           v-on="on"
         >
-          Click Me
+          Log Out
         </v-btn>
       </template>
 
