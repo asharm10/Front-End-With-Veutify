@@ -1,22 +1,30 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-content>
-      <v-card width="400" class="mx-auto mt-9">
-      <v-card-title>
-        Login
-      </v-card-title>
-        <form @submit.prevent="signIn">
-          <div>
-            <label for="username">email</label>
-            <input name="username" v-model="username" placeholder="email">
-          </div>
-          <div>
-            <label for="password">password</label>
-            <input name="password" v-model="password" placeholder="password" type="password">
-          </div>
-          <input type="submit" value="register">
-        </form>
-      </v-card>
+      <v-container mt-10>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-card-title>
+                Sign In
+              </v-card-title>
+              <v-card-text>
+                <v-form @submit.prevent="signIn">
+                  <v-text-field name="username" v-model="username" label="Email" type="text"></v-text-field>
+                  <v-text-field id="password" name="password" v-model="password" label="Password" type="password">
+                  </v-text-field>
+                  <v-card-actions>
+                    <v-col>
+                      <v-btn type="submit" class="mb-5" block color="error">Login</v-btn>
+                      <v-btn block color="error" to="/register">Register</v-btn>
+                    </v-col>
+                  </v-card-actions>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-content>
   </v-app>
 </template>
