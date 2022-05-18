@@ -76,8 +76,8 @@
                   </v-card-title>
                   <v-card-text>
                     <v-form @submit.prevent="register">
-                      <v-text-field name="Full Name" v-model="name" label="Full Name" type="text"></v-text-field>
-                      <v-text-field name="username" v-model="username" label="Email" type="text"></v-text-field>
+                      <v-text-field name="Full Name" v-model="fullname" label="Full Name" type="text"></v-text-field>
+                      <v-text-field name="username" v-model="username" label="Username" type="text"></v-text-field>
                       <v-text-field id="password" name="password" v-model="password" label="Password" type="password">
                       </v-text-field>
                       <v-card-actions>
@@ -123,7 +123,11 @@ export default {
     },
 
     async register() {
-      const { name, username, password } = this;
+      const { fullname, username, password } = this;
+      if(! (fullname && username && password)){
+        alert("Empty fields");
+        return;
+      }
       const res = await fetch(
         "http://localhost:5000/admin/servers",
         {
@@ -134,13 +138,18 @@ export default {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            name,
+            fullname,
             username,
             password
           })
         }
             ,);
       const data = await res.json();
+      if (data.status === 200) {
+        await this.getServers();
+      }else{
+        alert("Server with that username already exists")
+      }
       console.log(data);
       // if (data.status == 200){
       //     this.$store.dispatch('setToken', res.status)
