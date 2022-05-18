@@ -6,10 +6,10 @@
         </center>
         <h5 class="pa-5">Average Rating: {{ rating }}</h5>
         <v-list two-line>
-            <v-list-item-group v-model="selected" active-class="pink--text">
+            <v-list-item-group v-model="selected">
                 <template v-for="(item, index) in feedbacks">
                     <v-list-item :key="item.feedback">
-                        <template v-slot:default="{ active }">
+                        <template>
 
                             <v-list-item-content v-bind="attrs" v-on="on">
                                 <v-list-item-title v-text="item.feedback"></v-list-item-title>
@@ -26,13 +26,10 @@
 
                             <v-list-item-action>
 
-                                <v-icon v-if="!active" color="grey lighten-1" @click="remove(item._id)">
+                                <v-icon color="grey lighten-1" @click="remove(item._id)">
                                     mdi-delete-outline
                                 </v-icon>
 
-                                <v-icon v-else color="yellow darken-3" @click="remove(item._id)">
-                                    mdi-delete
-                                </v-icon>
                             </v-list-item-action>
                         </template>
                     </v-list-item>
@@ -68,7 +65,7 @@ export default {
             let data = await res.json();
             // data=data.success;
             console.log(data);
-            this.feedbacks = data.success;
+            this.feedbacks = data.success.reverse();
             //this.data=data.success;
         },
 

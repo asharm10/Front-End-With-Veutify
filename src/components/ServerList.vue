@@ -3,14 +3,17 @@
         <center>
             <h2 class="pt-8">Servers</h2>
         </center>
+        <v-toolbar elevation="0">
+            <v-text-field v-model="search" label="Search a server"></v-text-field>
+        </v-toolbar>
         <v-list two-line>
             <v-list-item-group v-model="selected">
-                <template v-for="(item, index) in servers">
+                <template v-for="(item, index) in filteredItems">
                     <v-list-item :key="item.username">
                         <template>
 
                             <v-list-item-content v-bind="attrs" v-on="on"
-                                @click="showDialog(item.username, item.fullname, item.weeklyHours)">
+                                @click="showDialog(item.username, item.fullname, item.weeklyHours, item.hoursWorked)">
                                 <v-list-item-title v-text="item.fullname"></v-list-item-title>
                                 <v-list-item-subtitle class="text--primary" v-text="item.username">
                                 </v-list-item-subtitle>
@@ -46,7 +49,14 @@
                 <v-card-text>
                     Full Name : {{ this.dialogFullname }}<br>
                     Username: {{ this.dialogUsername }}<br>
-                    Hours Worked: {{ this.dialogWeeklyHours }}
+                    Current Week Hours: {{ this.dialogWeeklyHours }}
+                    <v-data-table
+                        :headers="headers"
+                        :items="dialogHours"
+                        :items-per-page="5"
+                    >
+
+                    </v-data-table>
                 </v-card-text>
 
                 <v-divider></v-divider>
@@ -69,19 +79,44 @@ export default {
             dialog2: false,
             dialogUsername: '',
             dialogFullname: '',
+            dialogPassword: '',
+            dialogHours: [],
             dialogWeeklyHours: 10,
             servers: [],
+            searchItem: [],
+            search: '',
+            headers: [
+                {
+                    text: 'Date',
+                    value: 'date',
+                    align: 'start'
+                },
+                {
+                    text: 'Hours',
+                    value: 'numHours'
+                }
+            ]
         };
-    }, created() {
+    },
+    async created() {
         this.$root.$refs.ServerList = this;
-        this.getServers();
+        await this.getServers();
+    },
+    computed: {
+        filteredItems() {
+            return this.searchItem.filter((item) => {
+                return item.username.toLowerCase().match(this.search.toLowerCase()) ||
+                    item.fullname.toLowerCase().match(this.search.toLowerCase())
+            })
+        }
     },
     methods: {
-        showDialog(username, fullname, weeklyHours) {
+        showDialog(username, fullname, weeklyHours, hours) {
             this.dialogUsername = username;
             this.dialogFullname = fullname;
             this.dialogWeeklyHours = weeklyHours;
-            console.log("Hi");
+            this.dialogHours = hours;
+            console.log(hours);
             this.dialog2 = true;
         },
         async getServers() {
@@ -96,6 +131,8 @@ export default {
             // data=data.success;
             console.log(data);
             this.servers = data.success;
+            setTimeout(() => this.searchItem = this.servers)
+
             //this.data=data.success;
         },
 

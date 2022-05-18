@@ -3,7 +3,8 @@
         <center>
             <h3 class="pa-10">Server Login URL</h3>
             <br/>
-            <img class="mb-5" v-bind:src="qrCode"/>
+            <img v-if="qrCode" class="mb-5" v-bind:src="qrCode"/>
+            <h4 v-else>Generating QR Code..</h4>
             <p>{{qrCode.substring(62)}}</p>
             <v-btn @click="openQRLink()">DOWNLOAD</v-btn>
         </center>
