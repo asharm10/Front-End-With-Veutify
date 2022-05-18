@@ -19,7 +19,7 @@
                     <v-data-table :headers="headers" :items="dialogRatings" :items-per-page="5">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{ row.item.date }}</td>
+                                <td>{{ row.item.date.split(' ').slice(0, 5).join(' ') }}</td>
                                 <td>{{ row.item.rating }}</td>
                                 <td>
                                     <v-icon small @click="deleteRating(row.item._id)">
@@ -159,6 +159,8 @@ export default {
             ,);
             const data = await res.json();
             if (data.success.length === 0) {
+                this.rating = 0;
+                this.dialogRatings = []
                 return;
             }
             let sum = 0;
