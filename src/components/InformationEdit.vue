@@ -19,7 +19,7 @@
                 @click:append-outer="editTable = !editTable" readonly></v-text-field>
 
             <v-text-field v-if="editTable" v-model="updatedTableNumber" append-outer-icon="mdi-update"
-                label="New Table Number" @click:append-outer="updateTable()"></v-text-field>
+                label="New Table Number" type="number" @click:append-outer="updateTable()"></v-text-field>
 
             <v-snackbar v-model="snackbar">
                 {{ text }}
@@ -123,7 +123,12 @@ export default {
                 this.text = "Error - Table number same as the old table number";
                 this.snackbar = true;
                 return;
+            } else if(this.updatedTableNumber < 0){
+                this.text = "Error - Table number cannot be negative";
+                this.snackbar = true;
+                return;
             }
+            this.updatedTableNumber = parseInt(this.updatedTableNumber);
             const res = await fetch("http://localhost:5000/admin/tables", {
                 method: "PUT",
                 headers: {
