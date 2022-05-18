@@ -59,66 +59,8 @@
         <v-row>
 
           <v-col cols="12" sm="8">
-            <v-sheet min-height="70vh" rounded="lg">
-              <v-list two-line>
-                <v-list-item-group v-model="selected" active-class="pink--text">
-                  <template v-for="(item, index) in servers">
-                    <v-list-item :key="item.username">
-                      <template v-slot:default="{ active }">
-
-                        <v-list-item-content v-bind="attrs" v-on="on"
-                          @click="showDialog(item.username, item.fullname, item.weeklyHours)">
-                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
-                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
-                        </v-list-item-content>
-
-
-
-                        <!-- <v-list-item-content>
-                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
-                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
-                        </v-list-item-content> -->
-
-                        <v-list-item-action>
-
-                          <v-icon v-if="!active" color="grey lighten-1" @click="remove(item.username)">
-                            mdi-delete-outline
-                          </v-icon>
-
-                          <v-icon v-else color="yellow darken-3" @click="remove(item.username)">
-                            mdi-delete
-                          </v-icon>
-                        </v-list-item-action>
-                      </template>
-                    </v-list-item>
-
-                    <v-divider v-if="index < servers.length - 1" :key="index"></v-divider>
-                  </template>
-                </v-list-item-group>
-              </v-list>
-              <v-dialog v-model="dialog2" width="500">
-                <v-card>
-                  <v-card-title class="text-h5 grey lighten-2">
-                    Server Information
-                  </v-card-title>
-
-                  <v-card-text>
-                    Full Name : {{ this.dialogFullname }}<br>
-                    Username: {{ this.dialogUsername }}<br>
-                    Hours Worked: {{ this.dialogWeeklyHours }}
-                  </v-card-text>
-
-                  <v-divider></v-divider>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="dialog2 = false">
-                      Close
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-sheet>
+            <ServerList v-if="currentIndex === 0"/>
+            <h1 v-else-if="currentIndex === 1">Rando</h1>
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
@@ -152,94 +94,54 @@
 </template>
  
 <script>
+import ServerList from "./ServerList.vue";
 export default {
   name: "AdminPage",
   data() {
     return {
       selected: [2],
       dialog: false,
-      dialog2: false,
-      dialogUsername: '',
-      dialogFullname: '',
-      dialogWeeklyHours: 10,
-
+      counter: 0,
       drawer: false,
-      servers: [],
+      currentIndex: 0,
       items: [
-        ['mdi-domain', 'Edit Table Information'],
-        ['mdi-message-text', 'View Feedback'],
-        ['mdi-star', 'View Rating'],]
-    }
-  },
-  created() {
-    this.getServers();
+        ["mdi-domain", "Edit Table Information"],
+        ["mdi-message-text", "View Feedback"],
+        ["mdi-star", "View Rating"],
+      ]
+    };
   },
   methods: {
-    showDialog(username, fullname, weeklyHours) {
-      this.dialogUsername = username;
-      this.dialogFullname = fullname;
-      this.dialogWeeklyHours = weeklyHours;
-      console.log("Hi");
-      this.dialog2 = true;
-    },
     logout(e) {
       e.preventDefault();
       this.dialog = false;
-      this.$store.dispatch('setToken', 403)
+      this.$store.dispatch("setToken", 403);
       this.$router.back();
     },
-
-    async remove(username) {
-
-      const res = await fetch(
-        "http://localhost:5000/admin/servers",
-        {
-          method: "DELETE",
-          credentials: 'include',
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            username
-          })
-        }
-            ,);
-      const data = await res.json();
-      if (data.status === 200) {
-        await this.getServers();
-      } else {
-        alert("Could not delete the server!")
-      }
-    },
-
     async register() {
       const { fullname, username, password } = this;
       if (!(fullname && username && password)) {
         alert("Empty fields");
         return;
       }
-      const res = await fetch(
-        "http://localhost:5000/admin/servers",
-        {
-          method: "POST",
-          credentials: 'include',
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            fullname,
-            username,
-            password
-          })
-        }
-            ,);
+      const res = await fetch("http://localhost:5000/admin/servers", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fullname,
+          username,
+          password
+        })
+      });
       const data = await res.json();
       if (data.status === 200) {
         await this.getServers();
-      } else {
-        alert("Server with that username already exists")
+      }
+      else {
+        alert("Server with that username already exists");
       }
       console.log(data);
       // if (data.status == 200){
@@ -247,21 +149,7 @@ export default {
       //     this.$router.push("/admin");
       // }
     },
-
-    async getServers() {
-      const res = await fetch(
-        "http://localhost:5000/admin/servers",
-        {
-          method: "GET",
-          credentials: 'include',
-        }
-            ,);
-      let data = await res.json();
-      // data=data.success;
-      console.log(data);
-      this.servers = data.success;
-      //this.data=data.success;
-    }
-  }
+  },
+  components: { ServerList }
 }
 </script>
