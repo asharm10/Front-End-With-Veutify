@@ -90,8 +90,7 @@
             >
             <div>
                 <li v-for="server in servers" v-bind:key="server">{{ server.username }}</li>
-            </div>
-
+            </div> 
             </v-sheet>
           </v-col>
 
