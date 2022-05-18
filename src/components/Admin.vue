@@ -8,7 +8,7 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" app class="pt-4" color="grey lighten-3">
       <v-list>
-        <v-list-item v-for="([icon, text], i) in items" :key="i" link>
+        <v-list-item v-for="([icon, text], i) in items" :key="i" link @click="changeComponent(i)">
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
@@ -54,13 +54,14 @@
       </template>
     </v-navigation-drawer>
 
-    <v-main class="grey lighten-3">
+    <v-main class="grey lighten-3 mt-10">
       <v-container>
         <v-row>
 
           <v-col cols="12" sm="8">
             <ServerList v-if="currentIndex === 0"/>
-            <InformationEdit v-else-if="currentIndex ===1"/>
+            <InformationEdit v-else-if="currentIndex === 1"/>
+            <Feedbacks v-else-if="currentIndex === 2"/>
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
@@ -95,6 +96,8 @@
  
 <script>
 import ServerList from "./ServerList.vue";
+import InformationEdit from "./InformationEdit.vue";
+import Feedbacks from "./Feedbacks.vue";
 export default {
   name: "AdminPage",
   data() {
@@ -108,9 +111,9 @@ export default {
       password: '',
       currentIndex: 0,
       items: [
-        ["mdi-domain", "Edit Table Information"],
-        ["mdi-message-text", "View Feedback"],
-        ["mdi-star", "View Rating"],
+        ["mdi-group", "Server Information"],
+        ["mdi-domain", "Restaurant Information"],
+        ["mdi-star", "View Feedback"],
       ]
     };
   },
@@ -120,6 +123,10 @@ export default {
       this.dialog = false;
       this.$store.dispatch("setToken", 403);
       this.$router.back();
+    },
+    changeComponent(i){
+      this.currentIndex = i;
+      this.drawer = false;
     },
     async register() {
       const { fullname, username, password } = this;
@@ -153,6 +160,6 @@ export default {
       // }
     },
   },
-  components: { ServerList }
+  components: { ServerList, InformationEdit, Feedbacks }
 }
 </script>

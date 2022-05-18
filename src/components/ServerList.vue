@@ -1,5 +1,8 @@
 <template>
     <v-sheet min-height="70vh" rounded="lg">
+        <center>
+            <h2 class="pt-8">Servers</h2>
+        </center>
         <v-list two-line>
             <v-list-item-group v-model="selected" active-class="pink--text">
                 <template v-for="(item, index) in servers">

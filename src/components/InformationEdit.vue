@@ -1,7 +1,9 @@
 <template>
     <v-sheet min-height="70vh" rounded="lg">
-        <h2>Resturant Information</h2>
-        
+        <center>
+            <h2 class="pt-8">Restaurant Info</h2>
+        </center>
+
     </v-sheet>
 </template>
 <script>
