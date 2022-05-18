@@ -4,10 +4,10 @@
             <h2 class="pt-8">Servers</h2>
         </center>
         <v-list two-line>
-            <v-list-item-group v-model="selected" active-class="pink--text">
+            <v-list-item-group v-model="selected">
                 <template v-for="(item, index) in servers">
                     <v-list-item :key="item.username">
-                        <template v-slot:default="{ active }">
+                        <template>
 
                             <v-list-item-content v-bind="attrs" v-on="on"
                                 @click="showDialog(item.username, item.fullname, item.weeklyHours)">
@@ -25,13 +25,10 @@
 
                             <v-list-item-action>
 
-                                <v-icon v-if="!active" color="grey lighten-1" @click="remove(item.username)">
+                                <v-icon color="grey lighten-1" @click="remove(item.username)">
                                     mdi-delete-outline
                                 </v-icon>
 
-                                <v-icon v-else color="yellow darken-3" @click="remove(item.username)">
-                                    mdi-delete
-                                </v-icon>
                             </v-list-item-action>
                         </template>
                     </v-list-item>
