@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-content>
+      <Navbar/>
       <v-container mt-10>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
@@ -36,58 +37,58 @@
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
-  name: "RegisterName",
-  data() {
-    return {
-      username: "",
-      valid: true,
-      password: "",
-      fullname: "",
-      restaurantName: "",
-      nameRules: [
-        v => !!v || 'Field is required',
-      ],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules: [
-        v => !!v || 'Field is required',
-      ],
-    };
-  },
-  methods: {
-    async register() {
-      const isValid = this.$refs.form.validate();
-      if (!isValid) {
-        return;
-      }
-      const { username, password, fullname, restaurantName } = this;
-      const res = await fetch(
-        "http://localhost:5000/admin/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            username,
-            password,
-            fullname,
-            restaurantName
-          })
+    name: "RegisterName",
+    data() {
+        return {
+            username: "",
+            valid: true,
+            password: "",
+            fullname: "",
+            restaurantName: "",
+            nameRules: [
+                v => !!v || "Field is required",
+            ],
+            emailRules: [
+                v => !!v || "E-mail is required",
+                v => /.+@.+\..+/.test(v) || "E-mail must be valid",
+            ],
+            passwordRules: [
+                v => !!v || "Field is required",
+            ],
+        };
+    },
+    methods: {
+        async register() {
+            const isValid = this.$refs.form.validate();
+            if (!isValid) {
+                return;
+            }
+            const { username, password, fullname, restaurantName } = this;
+            const res = await fetch("http://localhost:5000/admin/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    fullname,
+                    restaurantName
+                })
+            });
+            const data = await res.json();
+            console.log(data);
+            if (data.status == 200) {
+                this.$router.push("/signin");
+            }
+            else {
+                alert("Error: User with that email already exists");
+            }
         }
-      );
-      const data = await res.json();
-      console.log(data);
-      if (data.status == 200) {
-        this.$router.push("/signin");
-      } else {
-        alert("Error: User with that email already exists")
-      }
-    }
-  }
+    },
+    components: { Navbar }
 };
 </script>
 

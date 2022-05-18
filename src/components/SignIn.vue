@@ -1,8 +1,11 @@
 <template>
   <v-app id="inspire">
+
     <v-content>
+      <Navbar />
       <v-container mt-10>
         <v-layout align-center justify-center>
+
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-card-title>
@@ -26,10 +29,12 @@
         </v-layout>
       </v-container>
     </v-content>
+
   </v-app>
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
   name: "SignIn",
   data() {
@@ -41,29 +46,28 @@ export default {
   methods: {
     async signIn() {
       const { username, password } = this;
-      const res = await fetch(
-        "http://localhost:5000/admin/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            username,
-            password
-          })
-        }
-      );
+      const res = await fetch("http://localhost:5000/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
       const data = await res.json();
       console.log(data);
       if (data.status == 200) {
-        this.$store.dispatch('setToken', res.status)
+        this.$store.dispatch("setToken", res.status);
         this.$router.push("/admin");
-      }else{
+      }
+      else {
         alert("Invalid credentials");
       }
     }
-  }
+  },
+  components: { Navbar }
 };
 </script>
