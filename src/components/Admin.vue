@@ -2,7 +2,9 @@
   <v-app id="inspire">
     <v-app-bar color="red" class="flex-grow-0" app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>RESPER</v-app-bar-title>
+      <v-spacer />
+      <v-app-bar-title class="nav-title">RESPER</v-app-bar-title>
+      <v-spacer />
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" app class="pt-4" color="grey lighten-3">
       <v-list>
