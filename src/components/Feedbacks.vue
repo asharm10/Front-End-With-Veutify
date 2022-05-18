@@ -85,6 +85,9 @@ export default {
                 }
             ,);
             const data = await res.json();
+            if(data.success.length === 0){
+                return;
+            }
             let sum = 0;
             data.success.forEach(element => {
                 sum += element.rating;
