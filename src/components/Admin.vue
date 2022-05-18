@@ -60,7 +60,7 @@
 
           <v-col cols="12" sm="8">
             <ServerList v-if="currentIndex === 0"/>
-            <h1 v-else-if="currentIndex === 1">Rando</h1>
+            <InformationEdit v-else-if="currentIndex ===1"/>
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
