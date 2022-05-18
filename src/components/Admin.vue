@@ -23,7 +23,7 @@
 
           <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
+              <v-btn color="red" dark v-bind="attrs" v-on="on">
                 Log Out
               </v-btn>
             </template>
@@ -63,49 +63,32 @@
                 <li v-for="server in servers" v-bind:key="server">{{ server.username }}</li>
             </div>  -->
               <v-list two-line>
-                <v-list-item-group
-                  v-model="selected"
-                  active-class="pink--text"
-              
-                >
-              <template v-for="(item, index) in servers">
+                <v-list-item-group v-model="selected" active-class="pink--text">
+                  <template v-for="(item, index) in servers">
                     <v-list-item :key="item.username">
                       <template v-slot:default="{ active }">
                         <v-list-item-content>
-                          <v-list-item-title v-text="item.username"></v-list-item-title>
+                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
 
-                          <v-list-item-subtitle
-                            class="text--primary"
-                            v-text="item.username"
-                          ></v-list-item-subtitle>
+                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
 
-                          <v-list-item-subtitle v-text="item.fullname"></v-list-item-subtitle>
                         </v-list-item-content>
 
                         <v-list-item-action>
                           <!-- <v-list-item-action-text v-text="item.fullname"></v-list-item-action-text> -->
 
-                          <v-icon
-                            v-if="!active"
-                            color="grey lighten-1" 
-                          >
+                          <v-icon v-if="!active" color="grey lighten-1" @click="remove(item.username)">
                             mdi-delete-outline
                           </v-icon>
 
-                          <v-icon
-                            v-else
-                            color="yellow darken-3"
-                          >
+                          <v-icon v-else color="yellow darken-3" @click="remove(item.username)">
                             mdi-delete
                           </v-icon>
                         </v-list-item-action>
                       </template>
                     </v-list-item>
 
-                    <v-divider
-                      v-if="index < servers.length - 1"
-                      :key="index"
-                    ></v-divider>
+                    <v-divider v-if="index < servers.length - 1" :key="index"></v-divider>
                   </template>
                 </v-list-item-group>
               </v-list>
@@ -169,9 +152,33 @@ export default {
       this.$router.back();
     },
 
+    async remove(username) {
+      
+      const res = await fetch(
+        "http://localhost:5000/admin/servers",
+        {
+          method: "DELETE",
+          credentials: 'include',
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username
+          })
+        }
+            ,);
+      const data = await res.json();
+      if (data.status === 200) {
+        await this.getServers();
+      } else {
+        alert("Could not delete the server!")
+      }
+    },
+
     async register() {
       const { fullname, username, password } = this;
-      if(! (fullname && username && password)){
+      if (!(fullname && username && password)) {
         alert("Empty fields");
         return;
       }
@@ -194,7 +201,7 @@ export default {
       const data = await res.json();
       if (data.status === 200) {
         await this.getServers();
-      }else{
+      } else {
         alert("Server with that username already exists")
       }
       console.log(data);
