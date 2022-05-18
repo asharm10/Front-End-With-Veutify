@@ -46,7 +46,7 @@
                     Server Information
                 </v-card-title>
 
-                <v-card-text>
+                <v-card-text class="pt-5">
                     <v-text-field name="Full Name" :value="dialogFullname" label="Full Name" readonly></v-text-field>
                     <v-text-field name="Username" :value="dialogUsername" label="Username" readonly></v-text-field>
                     <v-text-field name="Weekly Hours" :value="dialogWeeklyHours" label="Hours This Week" readonly></v-text-field>
