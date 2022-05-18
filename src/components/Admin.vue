@@ -103,6 +103,9 @@ export default {
       dialog: false,
       counter: 0,
       drawer: false,
+      username: '',
+      fullname: '',
+      password: '',
       currentIndex: 0,
       items: [
         ["mdi-domain", "Edit Table Information"],
@@ -138,7 +141,7 @@ export default {
       });
       const data = await res.json();
       if (data.status === 200) {
-        await this.getServers();
+        this.$root.$refs.ServerList.getServers();
       }
       else {
         alert("Server with that username already exists");

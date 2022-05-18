@@ -73,6 +73,7 @@ export default {
             servers: [],
         };
     }, created() {
+        this.$root.$refs.ServerList = this;
         this.getServers();
     },
     methods: {
