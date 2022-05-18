@@ -23,7 +23,7 @@
                   <v-card-actions>
                     <v-col>
                       <v-btn type="submit" class="mb-5" block color="error">Register</v-btn>
-                      <v-btn block color="error" to="/signin">Sign In</v-btn>
+                      <v-btn block color="error" to="/admin/signin">Sign In</v-btn>
                     </v-col>
                   </v-card-actions>
                 </v-form>
@@ -81,7 +81,7 @@ export default {
             const data = await res.json();
             console.log(data);
             if (data.status == 200) {
-                this.$router.push("/signin");
+                this.$router.push("/admin/signin");
             }
             else {
                 alert("Error: User with that email already exists");

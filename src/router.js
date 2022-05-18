@@ -2,6 +2,8 @@ import SignIn from './components/SignIn.vue'
 import RegisterName from './components/Register.vue'
 import AdminPage from './components/Admin.vue'
 import ClientPage from './components/Client.vue'
+import ServerLogin from './components/ServerLogin.vue'
+import ServerPage from './components/ServerPage.vue'
 
 import Vue from 'vue';
 import Router from 'vue-router';
@@ -19,12 +21,12 @@ const routes = [
     {
         name: "SignIn",
         component: SignIn,
-        path: "/signin",
+        path: "/admin/signin",
     },
     {
         name: "RegisterName",
         component: RegisterName,
-        path: "/register",
+        path: "/admin/register",
     },
     {
         name: "AdminPage",
@@ -37,6 +39,17 @@ const routes = [
         component: ClientPage,
         path: "/client",
     },
+    {
+        name:"ServerLogin",
+        component: ServerLogin,
+        path:"/server/signin/:id"
+    },
+    {
+        name:"ServerPage",
+        component:ServerPage,
+        path:"/:id/server"
+    }
+
 ];
 
 const router = new Router({
@@ -54,12 +67,17 @@ router.beforeEach((to, from, next) => {
         next('/admin');
     }
 
+    else if (to.name === 'ServerPage' && store.state.isServerLoggedIn === false) {
+        next({name:"ServerLogin"});
+    }
+
+    else if (to.name === 'ServerLogin' && store.state.isServerLoggedIn === true) {
+        next({name:"ServerPage"});
+    }
+
     else {
         next();
     }
-
-
-
 
 });
 

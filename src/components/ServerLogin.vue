@@ -9,7 +9,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-card-title>
-                Sign In
+                Server Sign In
               </v-card-title>
               <v-card-text>
                 <v-form @submit.prevent="signIn">
@@ -19,7 +19,6 @@
                   <v-card-actions>
                     <v-col>
                       <v-btn type="submit" class="mb-5" block color="error">Login</v-btn>
-                      <v-btn block color="error" to="/admin/register">Register</v-btn>
                     </v-col>
                   </v-card-actions>
                 </v-form>
@@ -36,9 +35,10 @@
 <script>
 import Navbar from "./Navbar.vue";
 export default {
-  name: "SignIn",
+  name: "ServerLogin",
   data() {
     return {
+        restaurantID: this.$route.params.id,
       username: "",
       password: "",
     };
@@ -46,7 +46,7 @@ export default {
   methods: {
     async signIn() {
       const { username, password } = this;
-      const res = await fetch("http://localhost:5000/admin/login", {
+      const res = await fetch("http://localhost:5000/"+this.restaurantID+"/server/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -60,9 +60,9 @@ export default {
       const data = await res.json();
       console.log(data);
       if (data.status == 200) {
-        localStorage.setItem('restaurantID', data.success.restaurantID);
-        this.$store.dispatch("setToken", res.status);
-        this.$router.push("/admin");
+        localStorage.setItem('token', data.token);
+        this.$store.dispatch("setServerToken", res.status);
+        this.$router.push("/"+this.restaurantID+"/server");
       }
       else {
         alert("Invalid credentials");

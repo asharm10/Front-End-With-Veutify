@@ -8,8 +8,11 @@ const store = new Vuex.Store({
     plugins: [createPersistedState({ storage: window.sessionStorage })],
     state: {
         token: null,
+        Servertoken:null,
         user: null,
-        isUserLoggedIn: false
+        server:null,
+        isUserLoggedIn: false,
+        isServerLoggedIn:false
         },
 
         mutations: {
@@ -20,12 +23,23 @@ const store = new Vuex.Store({
         } else {
         state.isUserLoggedIn = false
         }
+        },
+        setServerToken (state, token) {
+            state.Servertoken = token
+            if (token && state.Servertoken == 200) {
+                state.isServerLoggedIn = true
+            } else {
+                state.isServerLoggedIn = false
+            }
         }
         },
 
         actions: {
         setToken ({ commit }, token) {
         commit('setToken', token)
+        },
+        setServerToken({commit},token){
+            commit('setServerToken',token)
         }
     }
 });
