@@ -4,3 +4,15 @@ module.exports = defineConfig({
     'vuetify'
   ]
 })
+
+module.exports = {
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `
+        @import "@src/scss/variables.scss";
+        `
+      }
+    }
+  }
+}
