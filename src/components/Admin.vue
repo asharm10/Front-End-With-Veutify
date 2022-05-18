@@ -23,7 +23,7 @@
 
           <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
+              <v-btn color="red" dark v-bind="attrs" v-on="on">
                 Log Out
               </v-btn>
             </template>
@@ -57,32 +57,49 @@
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
+
           <v-col cols="12" sm="8">
             <v-sheet min-height="70vh" rounded="lg">
-              <!-- <div>
-                <li v-for="server in servers" v-bind:key="server">{{ server.username }}</li>
-            </div>  -->
               <v-list two-line>
                 <v-list-item-group v-model="selected" active-class="pink--text">
                   <template v-for="(item, index) in servers">
                     <v-list-item :key="item.username">
                       <template v-slot:default="{ active }">
+<<<<<<< HEAD
                         <v-list-item-content>
                           <v-list-item-title v-text="item.username"></v-list-item-title>
 
                           <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
+=======
+>>>>>>> 27110b3571cf71b874d175c61759e275524f2837
 
-                          <v-list-item-subtitle v-text="item.fullname"></v-list-item-subtitle>
+                        <v-list-item-content v-bind="attrs" v-on="on" @click="showDialog(item.username, item.fullname, item.weeklyHours)">
+                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
+                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
                         </v-list-item-content>
 
-                        <v-list-item-action>
-                          <!-- <v-list-item-action-text v-text="item.fullname"></v-list-item-action-text> -->
 
+
+                        <!-- <v-list-item-content>
+                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
+                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
+                        </v-list-item-content> -->
+
+                        <v-list-item-action>
+
+<<<<<<< HEAD
                           <v-icon v-if="!active" color="grey lighten-1">
                             mdi-delete-outline
                           </v-icon>
 
                           <v-icon v-else color="yellow darken-3">
+=======
+                          <v-icon v-if="!active" color="grey lighten-1" @click="remove(item.username)">
+                            mdi-delete-outline
+                          </v-icon>
+
+                          <v-icon v-else color="yellow darken-3" @click="remove(item.username)">
+>>>>>>> 27110b3571cf71b874d175c61759e275524f2837
                             mdi-delete
                           </v-icon>
                         </v-list-item-action>
@@ -93,9 +110,30 @@
                   </template>
                 </v-list-item-group>
               </v-list>
+              <v-dialog v-model="dialog2" width="500">
+                <v-card>
+                  <v-card-title class="text-h5 grey lighten-2">
+                    Server Information
+                  </v-card-title>
+
+                  <v-card-text>
+                    Full Name : {{ this.dialogFullname }}<br>
+                    Username: {{ this.dialogUsername }}<br>
+                    Hours Worked: {{ this.dialogWeeklyHours }}
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog2 = false">
+                      Close
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-sheet>
           </v-col>
-
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
 
@@ -134,23 +172,59 @@ export default {
     return {
       selected: [2],
       dialog: false,
+      dialog2: false,
+      dialogUsername: '',
+      dialogFullname: '',
+      dialogWeeklyHours: 10,
+
       drawer: false,
       servers: [],
       items: [
-        ['mdi-email', 'Inbox'],
-        ['mdi-account-supervisor-circle', 'Supervisors'],
-        ['mdi-clock-start', 'Logout'],]
+        ['mdi-domain', 'Edit Table Information'],
+        ['mdi-message-text', 'View Feedback'],
+        ['mdi-star', 'View Rating'],]
     }
   },
   created() {
     this.getServers();
   },
   methods: {
+    showDialog(username, fullname, weeklyHours) {
+      this.dialogUsername = username;
+      this.dialogFullname = fullname;
+      this.dialogWeeklyHours = weeklyHours;
+      console.log("Hi");
+      this.dialog2 = true;
+    },
     logout(e) {
       e.preventDefault();
       this.dialog = false;
       this.$store.dispatch('setToken', 403)
       this.$router.back();
+    },
+
+    async remove(username) {
+
+      const res = await fetch(
+        "http://localhost:5000/admin/servers",
+        {
+          method: "DELETE",
+          credentials: 'include',
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username
+          })
+        }
+            ,);
+      const data = await res.json();
+      if (data.status === 200) {
+        await this.getServers();
+      } else {
+        alert("Could not delete the server!")
+      }
     },
 
     async register() {
