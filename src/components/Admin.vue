@@ -65,15 +65,9 @@
                   <template v-for="(item, index) in servers">
                     <v-list-item :key="item.username">
                       <template v-slot:default="{ active }">
-<<<<<<< HEAD
-                        <v-list-item-content>
-                          <v-list-item-title v-text="item.username"></v-list-item-title>
 
-                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
-=======
->>>>>>> 27110b3571cf71b874d175c61759e275524f2837
-
-                        <v-list-item-content v-bind="attrs" v-on="on" @click="showDialog(item.username, item.fullname, item.weeklyHours)">
+                        <v-list-item-content v-bind="attrs" v-on="on"
+                          @click="showDialog(item.username, item.fullname, item.weeklyHours)">
                           <v-list-item-title v-text="item.fullname"></v-list-item-title>
                           <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
                         </v-list-item-content>
@@ -87,19 +81,11 @@
 
                         <v-list-item-action>
 
-<<<<<<< HEAD
-                          <v-icon v-if="!active" color="grey lighten-1">
-                            mdi-delete-outline
-                          </v-icon>
-
-                          <v-icon v-else color="yellow darken-3">
-=======
                           <v-icon v-if="!active" color="grey lighten-1" @click="remove(item.username)">
                             mdi-delete-outline
                           </v-icon>
 
                           <v-icon v-else color="yellow darken-3" @click="remove(item.username)">
->>>>>>> 27110b3571cf71b874d175c61759e275524f2837
                             mdi-delete
                           </v-icon>
                         </v-list-item-action>
