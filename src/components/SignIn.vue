@@ -60,6 +60,7 @@ export default {
       const data = await res.json();
       console.log(data);
       if (data.status == 200) {
+        localStorage.setItem('restaurantID', data.success.restaurantID);
         this.$store.dispatch("setToken", res.status);
         this.$router.push("/admin");
       }

@@ -62,6 +62,7 @@
             <ServerList v-if="currentIndex === 0"/>
             <InformationEdit v-else-if="currentIndex === 1"/>
             <Feedbacks v-else-if="currentIndex === 2"/>
+            <QRComponent v-else-if="currentIndex === 3"/>
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
@@ -98,6 +99,7 @@
 import ServerList from "./ServerList.vue";
 import InformationEdit from "./InformationEdit.vue";
 import Feedbacks from "./Feedbacks.vue";
+import QRComponent from "./QRComponent.vue";
 export default {
   name: "AdminPage",
   data() {
@@ -114,12 +116,16 @@ export default {
         ["mdi-group", "Server Information"],
         ["mdi-domain", "Restaurant Information"],
         ["mdi-star", "View Feedback"],
+        ["mdi-head", "Server Login URL"],
       ]
     };
   },
   methods: {
     logout(e) {
       e.preventDefault();
+      if(localStorage.getItem('restaurantID')){
+        localStorage.removeItem('restaurantID');
+      }
       this.dialog = false;
       this.$store.dispatch("setToken", 403);
       this.$router.back();
@@ -160,6 +166,6 @@ export default {
       // }
     },
   },
-  components: { ServerList, InformationEdit, Feedbacks }
+  components: { ServerList, InformationEdit, Feedbacks, QRComponent }
 }
 </script>
