@@ -12,6 +12,7 @@ module.exports = {
         prependData: `
         @import "@src/scss/variables.scss";
         `
+
       }
     }
   }

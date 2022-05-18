@@ -25,5 +25,6 @@ export default {
 .nav-title {
     font-family: 'Aclonica', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 80px;
+    font-weight: 100;
 }
 </style>
