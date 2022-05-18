@@ -13,7 +13,7 @@
 
                             <v-list-item-content v-bind="attrs" v-on="on">
                                 <v-list-item-title v-text="item.feedback"></v-list-item-title>
-                                <v-list-item-subtitle class="text--primary" v-text="item.date">
+                                <v-list-item-subtitle class="text--primary" v-text="item.date.split(' ').slice(0,5).join(' ')">
                                 </v-list-item-subtitle>
                             </v-list-item-content>
 
@@ -91,7 +91,6 @@ export default {
             });
             this.rating = sum / data.success.length;
             console.log(sum);
-            
         },
 
         async remove(id) {
