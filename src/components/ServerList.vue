@@ -13,7 +13,7 @@
                         <template>
 
                             <v-list-item-content v-bind="attrs" v-on="on"
-                                @click="showDialog(item.username, item.fullname, item.weeklyHours, item.hoursWorked)">
+                                @click="showDialog(item.username, item.fullname, item.weeklyHours, item.hoursWorked, item.password)">
                                 <v-list-item-title v-text="item.fullname"></v-list-item-title>
                                 <v-list-item-subtitle class="text--primary" v-text="item.username">
                                 </v-list-item-subtitle>
@@ -47,14 +47,15 @@
                 </v-card-title>
 
                 <v-card-text>
-                    Full Name : {{ this.dialogFullname }}<br>
-                    Username: {{ this.dialogUsername }}<br>
-                    Current Week Hours: {{ this.dialogWeeklyHours }}
-                    <v-data-table
-                        :headers="headers"
-                        :items="dialogHours"
-                        :items-per-page="5"
-                    >
+                    <v-text-field name="Full Name" :value="dialogFullname" label="Full Name" readonly></v-text-field>
+                    <v-text-field name="Username" :value="dialogUsername" label="Username" readonly></v-text-field>
+                    <v-text-field name="Weekly Hours" :value="dialogWeeklyHours" label="Hours This Week" readonly></v-text-field>
+                    <v-text-field name="dialogPassword" :value="dialogPassword" label="Password"
+                        :append-icon="dialogPasswordValue ? 'mdi-eye-off' : 'mdi-eye'"
+                        @click:append="() => (dialogPasswordValue = !dialogPasswordValue)"
+                        :type="dialogPasswordValue ? 'password' : 'text'" readonly></v-text-field>
+
+                    <v-data-table :headers="headers" :items="dialogHours" :items-per-page="5">
 
                     </v-data-table>
                 </v-card-text>
@@ -81,6 +82,7 @@ export default {
             dialogFullname: '',
             dialogPassword: '',
             dialogHours: [],
+            dialogPasswordValue: true,
             dialogWeeklyHours: 10,
             servers: [],
             searchItem: [],
@@ -111,11 +113,12 @@ export default {
         }
     },
     methods: {
-        showDialog(username, fullname, weeklyHours, hours) {
+        showDialog(username, fullname, weeklyHours, hours, password) {
             this.dialogUsername = username;
             this.dialogFullname = fullname;
             this.dialogWeeklyHours = weeklyHours;
             this.dialogHours = hours;
+            this.dialogPassword = password;
             console.log(hours);
             this.dialog2 = true;
         },
