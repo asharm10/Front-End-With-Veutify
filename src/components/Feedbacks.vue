@@ -92,7 +92,7 @@ export default {
             data.success.forEach(element => {
                 sum += element.rating;
             });
-            this.rating = sum / data.success.length;
+            this.rating = (sum / data.success.length).toPrecision(2);
             console.log(sum);
         },
 
