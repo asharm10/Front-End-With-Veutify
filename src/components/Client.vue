@@ -9,7 +9,9 @@
                     <v-flex xs12 sm8 md4>
                         <v-card class="elevation-12">
                             <v-card-title class="card-title">
+                                <v-spacer />
                                 Need Help?
+                                <v-spacer />
                             </v-card-title>
                             <v-card-text>
 
@@ -78,7 +80,6 @@
     font-family: 'Aclonica', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: xx-large !important;
     font-weight: 75px;
-    margin-left: 15%;
 }
 </style>
 
@@ -120,10 +121,12 @@ export default {
                 if (data.status === 200) {
                     this.snackbarText = "Successfully sent feedback!";
                     this.snackbar = true;
+                    this.feedback = '';
                 }
                 else {
                     this.snackbarText = "Could not send feedback!";
                     this.snackbar = true;
+                    this.feedback = '';
                 }
             }
         },

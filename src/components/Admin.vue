@@ -72,7 +72,9 @@
               <v-layout align-center justify-center>
                 <v-card class="elevation-0">
                   <v-card-title>
-                    Add a new Server
+                    <center>
+                      Add a new Server
+                    </center>
                   </v-card-title>
                   <v-card-text>
                     <v-form @submit.prevent="register">

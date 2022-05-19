@@ -5,7 +5,7 @@
 
         </center>
         <div class="pa-5">
-            <p>Average Rating: <b>{{ rating }}</b><v-btn small class="ml-10" @click="dialog = true">View all Ratings</v-btn>
+            <p>Average Rating: <b>{{ rating }}</b><v-btn small color="error" class="ml-10" @click="dialog = true">View all Ratings</v-btn>
             </p>
 
         </div>
