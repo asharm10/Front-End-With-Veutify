@@ -43,6 +43,10 @@ export default {
       password: "",
     };
   },
+  created(){
+      localStorage.setItem('resturantID',this.restaurantID)
+    }
+  ,
   methods: {
     async signIn() {
       const { username, password } = this;

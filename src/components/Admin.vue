@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar color="red" class="flex-grow-0" app dark>
+    <v-app-bar color="error" class="flex-grow-0" app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer />
       <v-toolbar-title class="nav-title">RESPER</v-toolbar-title>
