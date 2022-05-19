@@ -18,14 +18,6 @@
                                 <v-list-item-subtitle class="text--primary" v-text="item.username">
                                 </v-list-item-subtitle>
                             </v-list-item-content>
-
-
-
-                            <!-- <v-list-item-content>
-                          <v-list-item-title v-text="item.fullname"></v-list-item-title>
-                          <v-list-item-subtitle class="text--primary" v-text="item.username"></v-list-item-subtitle>
-                        </v-list-item-content> -->
-
                             <v-list-item-action>
 
                                 <v-icon color="grey lighten-1" @click="remove(item.username)">

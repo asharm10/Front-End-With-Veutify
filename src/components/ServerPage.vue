@@ -17,6 +17,28 @@
                     rounded="lg"
                     >
                     <!--  -->
+                    <center>
+                        <h2 class="pt-8">Requests</h2>
+                    </center>
+
+                    <v-list three-line>
+                        <template v-for="(item, index) in items2">
+
+                            <v-divider
+                            :key="index"
+                            ></v-divider>
+
+                            <v-list-item
+                            :key="item.text"
+                            >
+
+                            <v-list-item-content>
+                                <v-list-item-title v-html="item.text"></v-list-item-title>
+                                <v-list-item-subtitle v-html="item.table"></v-list-item-subtitle>
+                            </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                    </v-list>
                     </v-sheet>
                 </v-col>
 
@@ -62,6 +84,7 @@
                             </v-dialog>
                         </div>
                         <!-- second button -->
+    
                         <div class="pa-2">
 
                             <v-dialog v-model="dialog2" width="500">
@@ -97,36 +120,58 @@
                         <!-- third -->
                         <div class="pa-2">
 
-                            <v-dialog v-model="dialog3" width="500">
+                            <v-dialog v-model="dialog4" width="500">
                                 <template v-slot:activator="{ on, attrs }">
                                 <v-btn color="teal lighten-2" dark block v-bind="attrs" v-on="on">
-                                    Log Out
+                                    Add Table
                                 </v-btn>
                                 </template>
 
                                 <v-card>
                                 <v-card-title class="text-h5 grey lighten-2">
-                                    LOGOUT
+                                    Add Table
                                 </v-card-title>
 
                                 <v-card-text>
-                                    Are you sure you want to Logout?
+                                    Select your Tables:
                                 </v-card-text>
 
                                 <v-divider></v-divider>
 
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="primary" text @click="logout">
-                                    Yes
+                                    <v-btn color="primary" text @click="dialog4=false">
+                                    Add Tables
                                     </v-btn>
-                                    <v-btn color="primary" text @click="dialog3 = false">
-                                    No
+                                    <v-btn color="primary" text @click="dialog4 = false">
+                                    Close
                                     </v-btn>
                                 </v-card-actions>
                                 </v-card>
                             </v-dialog>
                         </div>
+                        <v-card
+                            class="elevation-0"
+                            max-width="300"
+                            tile
+                        >
+                            <v-list rounded>
+                            <v-subheader>Tables Selected</v-subheader>
+                            <v-list-item-group
+                                v-model="selectedItem"
+                                color="primary"
+                            >
+                                <v-list-item
+                                v-for="(item, i) in items"
+                                :key="i"
+                                >
+                                <v-list-item-content>
+                                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                                </v-list-item-content>
+                                </v-list-item>
+                            </v-list-item-group>
+                            </v-list>
+                        </v-card>
 
                     </v-sheet>
                 </v-col>
@@ -154,11 +199,21 @@ export default {
             dialog: false,
             dialog2:false,
             dialog3:false,
+            dialog4:false,
             checkIn:this.checkIn,
             message:this.message,
             token:this.token,
             snackbar: false,
             snackbarText: '',
+
+            selectedItem: 1,
+            items: [
+                { text: 'Table 1'},
+                { text: 'Table 2'},
+                { text: 'Table 3'},
+            ],
+
+            items2: [{text:'Order Food', table:'Table 2'},{text:'Ask for bill', table:'Table 1'},{text:'Call Server', table:'Table 3'}],
         };
     },
     created() {
