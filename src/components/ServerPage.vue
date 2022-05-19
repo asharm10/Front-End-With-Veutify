@@ -131,7 +131,16 @@
                     </v-sheet>
                 </v-col>
                 </v-row>
-            </v-container>
+                <v-snackbar v-model="snackbar">
+                    {{ snackbarText }}
+
+                    <template v-slot:action="{ attrs }">
+                        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                        Close
+                        </v-btn>
+                    </template>
+                    </v-snackbar>
+                </v-container>
         </v-main>
     </v-app>
 </template>
@@ -147,7 +156,9 @@ export default {
             dialog3:false,
             checkIn:this.checkIn,
             message:this.message,
-            token:this.token
+            token:this.token,
+            snackbar: false,
+            snackbarText: '',
         };
     },
     created() {
@@ -200,7 +211,19 @@ export default {
                     this.checkIn="Check Out"
                     this.message="Do you want to check out?"
                     localStorage.setItem('checkIn',this.checkIn)
+                    if(data.success){
+                        this.snackbarText="Checked in Successfully"
+                    }
+                    else if(data.status===404){
+                        this.snackbarText="Already Checked In"
+                    }
+                    this.snackbar=true
                 }
+                else{
+                    this.snackbarText="Error checking in"
+                    this.snackbar=true;
+                }
+
                 
             }
             else if(checkIn==="Check Out"){
@@ -220,6 +243,17 @@ export default {
                     this.checkIn="Check In"
                     this.message="Do you want to check in?"
                     localStorage.setItem('checkIn',this.checkIn)
+                    if(data.status===200){
+                        this.snackbarText="Checked out Successfully"
+                    }
+                    else if(data.status===404){
+                        this.snackbarText="You are not checked In"
+                    }
+                    this.snackbar=true
+                }
+                else{
+                    this.snackbarText="Error checking out"
+                    this.snackbar=true;
                 }
                     
             }
