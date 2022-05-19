@@ -13,7 +13,7 @@
               </v-card-title>
               <v-card-text>
                 <v-form @submit.prevent="signIn">
-                  <v-text-field name="username" v-model="username" label="Email" type="text"></v-text-field>
+                  <v-text-field name="username" v-model="username" label="Username" type="text"></v-text-field>
                   <v-text-field id="password" name="password" v-model="password" label="Password" type="password">
                   </v-text-field>
                   <v-card-actions>
