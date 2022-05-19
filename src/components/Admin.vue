@@ -94,6 +94,15 @@
             </v-sheet>
           </v-col>
         </v-row>
+        <v-snackbar v-model="snackbar">
+          {{ snackbarText }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-container>
     </v-main>
   </v-app>
@@ -116,6 +125,8 @@ export default {
       drawer: false,
       username: '',
       fullname: '',
+      snackbar: false,
+      snackbarText: '',
       password: '',
       currentIndex: 0,
       items: [
@@ -142,9 +153,11 @@ export default {
       this.drawer = false;
     },
     async register() {
+      this.snackbar = false;
       const { fullname, username, password } = this;
       if (!(fullname && username && password)) {
-        alert("Empty fields");
+        this.snackbarText = "Error - Fields cannot be empty";
+        this.snackbar = true;
         return;
       }
       const res = await fetch("http://localhost:5000/admin/servers", {
@@ -162,9 +175,12 @@ export default {
       const data = await res.json();
       if (data.status === 200) {
         this.$root.$refs.ServerList.getServers();
+        this.snackbarText = "Successfully added a new server";
+        this.snackbar = true;
       }
       else {
-        alert("Server with that username already exists");
+        this.snackbarText = "Error - Could not add the server";
+        this.snackbar = true;
       }
       console.log(data);
       // if (data.status == 200){

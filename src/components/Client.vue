@@ -109,7 +109,6 @@ export default {
             } else {
                 const res = await fetch("http://localhost:5000/" + this.restaurantID + "/feedback", {
                     method: "POST",
-                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -140,7 +139,6 @@ export default {
             }
             const res = await fetch("http://localhost:5000/" + this.restaurantID + "/rating", {
                 method: "POST",
-                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
