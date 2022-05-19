@@ -5,7 +5,8 @@
 
         </center>
         <div class="pa-5">
-            <p>Average Rating: <b>{{ rating }}</b><v-btn small color="error" class="ml-10" @click="getRating()">View all Ratings</v-btn>
+            <p>Average Rating: <b>{{ rating }}</b>
+                <v-btn small color="error" class="ml-10" @click="getRating()">View all Ratings</v-btn>
             </p>
 
         </div>
@@ -42,10 +43,39 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialog2" width="500">
+            <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                    Feedback
+                </v-card-title>
+                <div class="pa-5">
+                    {{ dialog2Feedback }}
+
+                    <p class="text-caption">
+                        {{ dialog2Date }}
+                    </p>
+                </div>
+
+                <v-card-text class="pt-5">
+
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog2 = false">
+                        Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <v-list two-line>
             <v-list-item-group v-model="selected">
                 <template v-for="(item, index) in feedbacks">
-                    <v-list-item :key="item.feedback">
+                    <v-list-item :key="item.feedback" @click="showFeedbackDialog(item.feedback, item.date)">
                         <template>
 
                             <v-list-item-content v-bind="attrs" v-on="on">
@@ -87,6 +117,9 @@ export default {
             dialogRatings: [],
             rating: 0,
             dialog: false,
+            dialog2: false,
+            dialog2Feedback: '',
+            dialog2Date: '',
             headers: [
                 {
                     text: 'Date',
@@ -106,7 +139,12 @@ export default {
         this.calculateRating();
     },
     methods: {
-        async getRating(){
+        showFeedbackDialog(feedback, date) {
+            this.dialog2Feedback = feedback;
+            this.dialog2Date = date;
+            this.dialog2 = true;
+        },
+        async getRating() {
             await this.getFeedbacks();
             await this.calculateRating();
             this.dialog = true;
