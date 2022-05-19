@@ -75,10 +75,9 @@
         <v-list two-line>
             <v-list-item-group v-model="selected">
                 <template v-for="(item, index) in feedbacks">
-                    <v-list-item :key="item.feedback" @click="showFeedbackDialog(item.feedback, item.date)">
+                    <v-list-item :key="item.feedback">
                         <template>
-
-                            <v-list-item-content v-bind="attrs" v-on="on">
+                            <v-list-item-content @click="showFeedbackDialog(item.feedback, item.date)" v-bind="attrs" v-on="on">
                                 <v-list-item-title v-text="item.feedback"></v-list-item-title>
                                 <v-list-item-subtitle class="text--primary"
                                     v-text="item.date.split(' ').slice(0, 5).join(' ')">
