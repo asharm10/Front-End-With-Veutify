@@ -59,10 +59,12 @@
         <v-row>
 
           <v-col cols="12" sm="8">
-            <ServerList v-if="currentIndex === 0"/>
-            <InformationEdit v-else-if="currentIndex === 1"/>
-            <Feedbacks v-else-if="currentIndex === 2"/>
-            <QRComponent v-else-if="currentIndex === 3"/>
+            <ServerList v-if="currentIndex === 0" />
+            <InformationEdit v-else-if="currentIndex === 1" />
+            <Feedbacks v-else-if="currentIndex === 2" />
+            <ServerQRComponent v-else-if="currentIndex === 3" />
+            <ClientQRComponent v-else-if="currentIndex === 4" />
+
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
@@ -99,7 +101,9 @@
 import ServerList from "./ServerList.vue";
 import InformationEdit from "./InformationEdit.vue";
 import Feedbacks from "./Feedbacks.vue";
-import QRComponent from "./QRComponent.vue";
+import ServerQRComponent from "./ServerQRComponent.vue";
+import ClientQRComponent from "./ClientQRComponent.vue";
+
 export default {
   name: "AdminPage",
   data() {
@@ -117,20 +121,21 @@ export default {
         ["mdi-domain", "Restaurant Information"],
         ["mdi-star", "View Feedback"],
         ["mdi-head", "Server Login URL"],
+        ["mdi-cart", "Client Page URL"]
       ]
     };
   },
   methods: {
     logout(e) {
       e.preventDefault();
-      if(localStorage.getItem('restaurantID')){
+      if (localStorage.getItem('restaurantID')) {
         localStorage.removeItem('restaurantID');
       }
       this.dialog = false;
       this.$store.dispatch("setToken", 403);
       this.$router.back();
     },
-    changeComponent(i){
+    changeComponent(i) {
       this.currentIndex = i;
       this.drawer = false;
     },
@@ -166,6 +171,6 @@ export default {
       // }
     },
   },
-  components: { ServerList, InformationEdit, Feedbacks, QRComponent }
+  components: { ServerList, InformationEdit, Feedbacks, ServerQRComponent, ClientQRComponent }
 }
 </script>

@@ -1,18 +1,18 @@
 <template>
     <v-sheet min-height="70vh" rounded="lg">
         <center>
-            <h3 class="pa-10">Server Login URL</h3>
-            <br/>
-            <img v-if="qrCode" class="mb-5" v-bind:src="qrCode"/>
+            <h3 class="pa-10">Client Page URL</h3>
+            <br />
+            <img v-if="qrCode" class="mb-5" v-bind:src="qrCode" />
             <h4 v-else>Generating QR Code..</h4>
-            <p>{{qrCode.substring(62)}}</p>
-            <v-btn @click="openQRLink()">DOWNLOAD</v-btn>
+            <p>{{ qrCode.substring(62) }}</p>
+            <v-btn color="error" @click="openQRLink()">DOWNLOAD</v-btn>
         </center>
     </v-sheet>
 </template>
 <script>
 export default {
-    name: "QRComponent",
+    name: "ClientQRComponent",
     data() {
         return {
             qrCode: ''
@@ -22,7 +22,7 @@ export default {
     },
     methods: {
 
-        openQRLink(){
+        openQRLink() {
             window.open(this.qrCode, '_blank');
         },
 
@@ -31,7 +31,7 @@ export default {
             if (!restaurantID) {
                 return;
             }
-            this.qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=http://localhost:8080/server/signin/"+restaurantID;
+            this.qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=http://localhost:8080/" + restaurantID +"/client/";
         },
 
     }

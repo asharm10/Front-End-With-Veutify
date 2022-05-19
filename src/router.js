@@ -37,7 +37,7 @@ const routes = [
     {
         name: "ClientPage",
         component: ClientPage,
-        path: "/client",
+        path: "/:id/client",
     },
     {
         name:"ServerLogin",
