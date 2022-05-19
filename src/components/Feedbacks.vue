@@ -5,7 +5,7 @@
 
         </center>
         <div class="pa-5">
-            <p>Average Rating: <b>{{ rating }}</b><v-btn small color="error" class="ml-10" @click="dialog = true">View all Ratings</v-btn>
+            <p>Average Rating: <b>{{ rating }}</b><v-btn small color="error" class="ml-10" @click="getRating()">View all Ratings</v-btn>
             </p>
 
         </div>
@@ -106,7 +106,11 @@ export default {
         this.calculateRating();
     },
     methods: {
-
+        async getRating(){
+            await this.getFeedbacks();
+            await this.calculateRating();
+            this.dialog = true;
+        },
         async deleteRating(id) {
             const res = await fetch(
                 "http://localhost:5000/admin/ratings",

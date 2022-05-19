@@ -38,19 +38,19 @@ export default {
   name: "ServerLogin",
   data() {
     return {
-        restaurantID: this.$route.params.id,
+      restaurantID: this.$route.params.id,
       username: "",
       password: "",
     };
   },
-  created(){
-      localStorage.setItem('resturantID',this.restaurantID)
-    }
+  created() {
+    localStorage.setItem('resturantID', this.restaurantID)
+  }
   ,
   methods: {
     async signIn() {
       const { username, password } = this;
-      const res = await fetch("http://localhost:5000/"+this.restaurantID+"/server/login", {
+      const res = await fetch("http://localhost:5000/" + this.restaurantID + "/server/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -64,9 +64,11 @@ export default {
       const data = await res.json();
       console.log(data);
       if (data.status == 200) {
+        localStorage.setItem('username', data.success.username);
+        localStorage.setItem('fullname', data.success.fullname);
         localStorage.setItem('token', data.token);
         this.$store.dispatch("setServerToken", res.status);
-        this.$router.push("/"+this.restaurantID+"/server");
+        this.$router.push("/" + this.restaurantID + "/server");
       }
       else {
         alert("Invalid credentials");
