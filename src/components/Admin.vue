@@ -59,10 +59,12 @@
         <v-row>
 
           <v-col cols="12" sm="8">
-            <ServerList v-if="currentIndex === 0"/>
-            <InformationEdit v-else-if="currentIndex === 1"/>
-            <Feedbacks v-else-if="currentIndex === 2"/>
-            <QRComponent v-else-if="currentIndex === 3"/>
+            <ServerList v-if="currentIndex === 0" />
+            <InformationEdit v-else-if="currentIndex === 1" />
+            <Feedbacks v-else-if="currentIndex === 2" />
+            <ServerQRComponent v-else-if="currentIndex === 3" />
+            <ClientQRComponent v-else-if="currentIndex === 4" />
+
           </v-col>
           <v-col cols="12" sm="3">
             <v-sheet rounded="lg" min-height="268">
@@ -70,7 +72,9 @@
               <v-layout align-center justify-center>
                 <v-card class="elevation-0">
                   <v-card-title>
-                    Add a new Server
+                    <center>
+                      Add a new Server
+                    </center>
                   </v-card-title>
                   <v-card-text>
                     <v-form @submit.prevent="register">
@@ -90,6 +94,15 @@
             </v-sheet>
           </v-col>
         </v-row>
+        <v-snackbar v-model="snackbar">
+          {{ snackbarText }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-container>
     </v-main>
   </v-app>
@@ -99,7 +112,9 @@
 import ServerList from "./ServerList.vue";
 import InformationEdit from "./InformationEdit.vue";
 import Feedbacks from "./Feedbacks.vue";
-import QRComponent from "./QRComponent.vue";
+import ServerQRComponent from "./ServerQRComponent.vue";
+import ClientQRComponent from "./ClientQRComponent.vue";
+
 export default {
   name: "AdminPage",
   data() {
@@ -110,6 +125,8 @@ export default {
       drawer: false,
       username: '',
       fullname: '',
+      snackbar: false,
+      snackbarText: '',
       password: '',
       currentIndex: 0,
       items: [
@@ -117,27 +134,30 @@ export default {
         ["mdi-domain", "Restaurant Information"],
         ["mdi-star", "View Feedback"],
         ["mdi-head", "Server Login URL"],
+        ["mdi-cart", "Client Page URL"]
       ]
     };
   },
   methods: {
     logout(e) {
       e.preventDefault();
-      if(localStorage.getItem('restaurantID')){
+      if (localStorage.getItem('restaurantID')) {
         localStorage.removeItem('restaurantID');
       }
       this.dialog = false;
       this.$store.dispatch("setToken", 403);
       this.$router.back();
     },
-    changeComponent(i){
+    changeComponent(i) {
       this.currentIndex = i;
       this.drawer = false;
     },
     async register() {
+      this.snackbar = false;
       const { fullname, username, password } = this;
       if (!(fullname && username && password)) {
-        alert("Empty fields");
+        this.snackbarText = "Error - Fields cannot be empty";
+        this.snackbar = true;
         return;
       }
       const res = await fetch("http://localhost:5000/admin/servers", {
@@ -155,9 +175,12 @@ export default {
       const data = await res.json();
       if (data.status === 200) {
         this.$root.$refs.ServerList.getServers();
+        this.snackbarText = "Successfully added a new server";
+        this.snackbar = true;
       }
       else {
-        alert("Server with that username already exists");
+        this.snackbarText = "Error - Could not add the server";
+        this.snackbar = true;
       }
       console.log(data);
       // if (data.status == 200){
@@ -166,6 +189,6 @@ export default {
       // }
     },
   },
-  components: { ServerList, InformationEdit, Feedbacks, QRComponent }
+  components: { ServerList, InformationEdit, Feedbacks, ServerQRComponent, ClientQRComponent }
 }
 </script>

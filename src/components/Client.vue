@@ -9,7 +9,9 @@
                     <v-flex xs12 sm8 md4>
                         <v-card class="elevation-12">
                             <v-card-title class="card-title">
+                                <v-spacer />
                                 Need Help?
+                                <v-spacer />
                             </v-card-title>
                             <v-card-text>
 
@@ -24,29 +26,30 @@
 
                                 </v-card-actions>
 
-                                <v-rating v-model="rating" background-color="warning" color="warning" :length="5"
-                                    size="50" value="3.5" class="ml-6" half-increments hover>
-                                </v-rating>
+                                <center>
+                                    <v-rating v-model="rating" background-color="warning" color="warning" :length="5"
+                                        size="50" value="0" class="ml-6" half-increments hover>
+                                    </v-rating>
+
+                                    <v-btn small color="error" @click="postRating()">POST Rating</v-btn>
+                                </center>
 
                             </v-card-text>
                             <v-col col="12">
-                                <v-textarea class="ml-2" value="Custom Message" rows="1" prepend-icon="mdi-comment"
-                                    color="red" auto-grow>
+                                <v-textarea class="ml-2" label="Custom Message" rows="1" prepend-icon="mdi-comment"
+                                    append-icon="mdi-send" color="red" auto-grow>
 
                                 </v-textarea>
-                                <v-col class="text-right">
-                                    <v-btn color="error" class="mt-5" small>Submit</v-btn>
-                                </v-col>
+
                             </v-col>
 
                             <v-col col="12">
-                                <v-textarea class="ml-2" value="Feedback" rows="1" prepend-icon="mdi-comment"
-                                    color="red" auto-grow>
+                                <v-textarea v-model="feedback" class="ml-2" label="Feedback" rows="1"
+                                    prepend-icon="mdi-comment" append-icon="mdi-send" color="red"
+                                    @click:append="postFeedback()">
 
                                 </v-textarea>
-                                <v-col class="text-right">
-                                    <v-btn color="error" class="mt-5" small>Submit</v-btn>
-                                </v-col>
+
 
                             </v-col>
                         </v-card>
@@ -56,6 +59,15 @@
                     </v-flex>
                 </v-layout>
             </v-container>
+            <v-snackbar v-model="snackbar">
+                {{ snackbarText }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                        Close
+                    </v-btn>
+                </template>
+            </v-snackbar>
         </v-content>
 
     </v-app>
@@ -68,7 +80,6 @@
     font-family: 'Aclonica', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: xx-large !important;
     font-weight: 75px;
-    margin-left: 15%;
 }
 </style>
 
@@ -80,10 +91,73 @@ export default {
     name: "ClientPage",
     data() {
         return {
-
+            rating: 0,
+            restaurantID: this.$route.params.id,
+            feedback: '',
+            snackbar: false,
+            snackbarText: ''
         };
     },
-    components: { Navbar }
+    components: { Navbar },
+    methods: {
+        async postFeedback() {
+            this.snackbar = false;
+            if (!this.feedback) {
+                this.snackbarText = "Error - Field is Empty";
+                this.snackbar = true;
+                return;
+            } else {
+                const res = await fetch("http://localhost:5000/" + this.restaurantID + "/feedback", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        feedback: this.feedback,
+                    })
+                });
+                const data = await res.json();
+                if (data.status === 200) {
+                    this.snackbarText = "Successfully sent feedback!";
+                    this.snackbar = true;
+                    this.feedback = '';
+                }
+                else {
+                    this.snackbarText = "Could not send feedback!";
+                    this.snackbar = true;
+                    this.feedback = '';
+                }
+            }
+        },
+        async postRating() {
+            this.snackbar = false;
+            console.log(this.rating);
+            if (this.rating === 0) {
+                this.snackbarText = "Error - Rating cannot be 0";
+                this.snackbar = true;
+                return;
+            }
+            const res = await fetch("http://localhost:5000/" + this.restaurantID + "/rating", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    rating: this.rating,
+                })
+            });
+            const data = await res.json();
+            if (data.status === 200) {
+                this.snackbarText = "Successfully sent rating!";
+                this.snackbar = true;
+            }
+            else {
+                this.snackbarText = "Could not send rating!";
+                this.snackbar = true;
+            }
+
+        }
+    }
 }
 </script>
 
