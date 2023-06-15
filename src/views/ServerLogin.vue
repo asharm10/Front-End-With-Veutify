@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 export default {
   name: "ServerLogin",
   data() {
@@ -68,6 +68,7 @@ export default {
         localStorage.setItem('fullname', data.success.fullname);
         localStorage.setItem('token', data.token);
         this.$store.dispatch("setServerToken", res.status);
+        console.log(res.status)
         this.$router.push("/" + this.restaurantID + "/server");
       }
       else {

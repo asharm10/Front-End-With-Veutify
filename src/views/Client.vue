@@ -18,21 +18,23 @@
 
                                 <v-card-actions>
                                     <v-col>
-                                        <v-btn type="submit" class="mb-5" block color="error" x-large>Order Food
+                                        <v-btn type="submit" class="mb-5" block color="error" x-large @click="postRequest('Order Food')">Order Food
                                         </v-btn>
-                                        <v-btn block color="error" class="mb-5" x-large>Call Server</v-btn>
-                                        <v-btn block color="error" class="mb-5" x-large>Ask For Bill</v-btn>
+                                        <v-btn block color="error" class="mb-5" x-large @click="postRequest('Call Server')">Call Server</v-btn>
+                                        <v-btn block color="error" class="mb-5" x-large @click="postRequest('Ask For Bill')">Ask For Bill</v-btn>
                                     </v-col>
 
                                 </v-card-actions>
+                            <div class="rating-container d-flex flex-column align-center">
 
-                                <center>
+                              <center>
                                     <v-rating v-model="rating" background-color="warning" color="warning" :length="5"
-                                        size="50" value="0" class="ml-6" half-increments hover>
+                                        size="40" value="0" class="ml-6" half-increments hover density="compact">
                                     </v-rating>
 
                                     <v-btn small color="error" @click="postRating()">POST Rating</v-btn>
                                 </center>
+                            </div>
 
                             </v-card-text>
                             <v-col col="12">
@@ -81,12 +83,24 @@
     font-size: xx-large !important;
     font-weight: 75px;
 }
+
+@media (min-width: 600px) {
+  .rating-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rating-container .ml-6 {
+    margin-left: 0.5rem;
+  }
+}
 </style>
 
 
 
 <script>
-import Navbar from "./Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 export default {
     name: "ClientPage",
     data() {
@@ -95,9 +109,17 @@ export default {
             restaurantID: this.$route.params.id,
             feedback: '',
             snackbar: false,
-            snackbarText: ''
+            snackbarText: '',
+            // requests: '',
+            table: this.$route.params.table,
         };
     },
+
+      created(){
+      // this.table = localStorage.getItem('table')
+      // console.log(this.table);
+    },
+
     components: { Navbar },
     methods: {
         async postFeedback() {
@@ -156,7 +178,31 @@ export default {
                 this.snackbar = true;
             }
 
+        },
+
+      async postRequest(request){
+          // console.log(this.table);
+        const res = await fetch("http://localhost:5000/" + this.restaurantID + "/requests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            requests: request,
+            table: this.table,
+          })
+        });
+        const data = await res.json();
+        if (data.status === 200) {
+          console.log(data);
+          this.snackbarText = "Successfully sent request!";
+          this.snackbar = true;
         }
+        else {
+          this.snackbarText = "Could not send request!";
+          this.snackbar = true;
+        }
+      }
     }
 }
 </script>

@@ -109,11 +109,11 @@
 </template>
  
 <script>
-import ServerList from "./ServerList.vue";
-import InformationEdit from "./InformationEdit.vue";
-import Feedbacks from "./Feedbacks.vue";
-import ServerQRComponent from "./ServerQRComponent.vue";
-import ClientQRComponent from "./ClientQRComponent.vue";
+import ServerList from "../components/ServerList.vue";
+import InformationEdit from "../components/InformationEdit.vue";
+import Feedbacks from "../components/Feedbacks.vue";
+import ServerQRComponent from "../components/ServerQRComponent.vue";
+import ClientQRComponent from "../components/ClientQRComponent.vue";
 
 export default {
   name: "AdminPage",

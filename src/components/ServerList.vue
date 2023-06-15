@@ -127,8 +127,6 @@ export default {
             console.log(data);
             this.servers = data.success;
             setTimeout(() => this.searchItem = this.servers)
-
-            //this.data=data.success;
         },
 
         async remove(username) {

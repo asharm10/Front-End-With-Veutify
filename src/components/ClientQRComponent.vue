@@ -1,12 +1,24 @@
 <template>
-    <v-sheet min-height="70vh" rounded="lg">
+    <v-sheet min-height="80vh" rounded="lg">
         <center>
-            <h3 class="pa-10">Client Page URL</h3>
+            <h3 class="px-10 pt-10">Client Page URL</h3>
             <br />
-            <img v-if="qrCode" class="mb-5" v-bind:src="qrCode" />
-            <h4 v-else>Generating QR Code..</h4>
+          <div class="d-inline-flex flex-column justify-center">
+            <v-autocomplete
+                clearable
+                label="Table Number"
+                :items="this.tableArray"
+                v-model="table"
+            ></v-autocomplete>
+            <v-btn @click="getQRCode()">
+              Generate QR Code
+            </v-btn>
+          </div>
+          <div v-if="qrCode" class="pa-15">
+            <img alt="QR CODE" v-bind:src="qrCode" />
             <p>{{ qrCode.substring(62) }}</p>
             <v-btn color="error" @click="openQRLink()">DOWNLOAD</v-btn>
+          </div>
         </center>
     </v-sheet>
 </template>
@@ -15,10 +27,14 @@ export default {
     name: "ClientQRComponent",
     data() {
         return {
-            qrCode: ''
+            qrCode: '',
+            table: '',
+            tableArray: [],
+            restaurantID: '',
         };
     }, created() {
-        this.getQRCode();
+        this.restaurantID = localStorage.getItem('restaurantID');
+        this.getTables();
     },
     methods: {
 
@@ -27,11 +43,39 @@ export default {
         },
 
         async getQRCode() {
-            const restaurantID = localStorage.getItem('restaurantID');
-            if (!restaurantID) {
+
+            if (!this.restaurantID) {
                 return;
             }
-            this.qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=http://localhost:8080/" + restaurantID +"/client/";
+            else if(!this.table){return alert("Choose a Table");}
+            // else if(this.table < 1 || this.table > this.totalTables){
+            //   alert("Invalid ")
+            // }
+            // this.qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=http://localhost:8080/" + restaurantID +"/client/";
+          this.qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=http://localhost:8080/" + this.restaurantID +"/client/"+this.table;
+
+        },
+
+        async getTables(){
+           if (!this.restaurantID){return;}
+
+          const res = await fetch(
+              "http://localhost:5000/"+this.restaurantID+"/server/tables",
+              {
+                method: "GET",
+                credentials: 'include',
+              }
+              ,);
+          const data = await res.json();
+          if (data.status === 200) {
+            for (let index = 1; index <= data.tables; index++) {
+              this.tableArray.push(index);
+            }
+          }
+            else{
+              alert("error")
+            }
+            console.log(this.tableArray, (data));
         },
 
     }

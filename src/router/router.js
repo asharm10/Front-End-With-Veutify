@@ -1,13 +1,13 @@
-import SignIn from './components/SignIn.vue'
-import RegisterName from './components/Register.vue'
-import AdminPage from './components/Admin.vue'
-import ClientPage from './components/Client.vue'
-import ServerLogin from './components/ServerLogin.vue'
-import ServerPage from './components/ServerPage.vue'
+import SignIn from '../views/SignIn.vue'
+import RegisterName from '../views/Register.vue'
+import AdminPage from '../views/Admin.vue'
+import ClientPage from '../views/Client.vue'
+import ServerLogin from '../views/ServerLogin.vue'
+import ServerPage from '../views/ServerPage.vue'
 
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from './store.js'
+import store from '../store/store'
 
 
 Vue.use(Router)
@@ -37,7 +37,7 @@ const routes = [
     {
         name: "ClientPage",
         component: ClientPage,
-        path: "/:id/client",
+        path: "/:id/client/:table",
     },
     {
         name:"ServerLogin",
@@ -58,7 +58,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(store.state.isUserLoggedIn);
+    console.log(store.state.isServerLoggedIn);
+    // console.log(to.fullPath)
     if (to.fullPath === '/admin' && store.state.isUserLoggedIn === false) {
         next('/signin');
     }

@@ -17,30 +17,22 @@ const store = new Vuex.Store({
 
         mutations: {
         setToken (state, token) {
-        state.token = token
-        if (token && state.token == 200) {
-        state.isUserLoggedIn = true
-        } else {
-        state.isUserLoggedIn = false
-        }
+            state.token = token
+            state.isUserLoggedIn = token && state.token === 200;
         },
         setServerToken (state, token) {
             state.Servertoken = token
-            if (token && state.Servertoken == 200) {
-                state.isServerLoggedIn = true
-            } else {
-                state.isServerLoggedIn = false
-            }
+            state.isServerLoggedIn = token && state.Servertoken === 200;
         }
         },
 
         actions: {
-        setToken ({ commit }, token) {
-        commit('setToken', token)
-        },
-        setServerToken({commit},token){
-            commit('setServerToken',token)
-        }
+            setToken ({ commit }, token) {
+                commit('setToken', token)
+            },
+            setServerToken({commit},token){
+                commit('setServerToken', token)
+            }
     }
 });
 export default store;

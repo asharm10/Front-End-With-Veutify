@@ -34,41 +34,42 @@
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
-export default {
-  name: "SignIn",
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    async signIn() {
-      const { username, password } = this;
-      const res = await fetch("http://localhost:5000/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
-      const data = await res.json();
-      console.log(data);
-      if (data.status == 200) {
-        localStorage.setItem('restaurantID', data.success.restaurantID);
-        this.$store.dispatch("setToken", res.status);
-        this.$router.push("/admin");
+  import Navbar from "../components/Navbar.vue";
+  export default {
+    name: "SignIn",
+    data() {
+      return {
+        username: "",
+        password: "",
+      };
+    },
+    methods: {
+      async signIn() {
+        const { username, password } = this;
+        const res = await fetch("http://localhost:5000/admin/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username,
+            password
+          })
+        });
+        const data = await res.json();
+        // console.log(data)
+        if (data.status === 200) {
+          localStorage.setItem('restaurantID', data.success.restaurantID);
+          this.$store.dispatch("setToken", res.status);
+          this.$router.push("/admin");
+          console.log("hello world")
+        }
+        else {
+          alert("Invalid credentials");
+        }
       }
-      else {
-        alert("Invalid credentials");
-      }
-    }
-  },
-  components: { Navbar }
-};
+    },
+    components: { Navbar }
+  };
 </script>

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 export default {
     name: "RegisterName",
     data() {
@@ -82,6 +82,7 @@ export default {
             console.log(data);
             if (data.status == 200) {
                 this.$router.push("/admin/signin");
+          
             }
             else {
                 alert("Error: User with that email already exists");

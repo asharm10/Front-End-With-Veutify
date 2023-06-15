@@ -39,7 +39,7 @@ export default {
     name: "InformationEdit",
     data() {
         return {
-            title: 'Current Resturant Name:',
+            title: 'Current Restaurant Name:',
             restaurantName: '',
             message4: 'Current Name',
             restaurantID: '',
